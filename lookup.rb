@@ -18,7 +18,6 @@ domain = get_command_line_argument
 dns_raw = File.readlines("zone")
 
 def parse_dns(dnsRaw)
-  # raw.delete_at(0)
   zoneRecord = {}
   dnsRaw.each do |line|
     if line[0] == "#" || line == "\n"
@@ -26,13 +25,15 @@ def parse_dns(dnsRaw)
     end
 
     record = line.split(", ")
-    zoneRecord[record[1].gsub(/\s+/, "")] = {
+
+    d = record[1].gsub(/\s+/, "")
+    zoneRecord.merge!({ d => {
       :type => record[0].gsub(/\s+/, ""),
       :target => record[2].gsub(/\s+/, ""),
-    }
+    }})
   end
 
-  return zoneRecord
+  zoneRecord
 end
 
 def resolve(dns_records, lookup_chain, domain)
