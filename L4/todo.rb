@@ -14,14 +14,17 @@ class Todo < ActiveRecord::Base
 
   def self.overdue
     all.filter { |todo| todo.due_date < Date.today }
+    .map { |todo| todo.to_displayable_string }
   end
 
   def self.due_today
     all.filter { |todo| todo.due_date == Date.today }
+    .map { |todo| todo.to_displayable_string }
   end
 
   def self.due_later
     all.filter { |todo| todo.due_date > Date.today }
+    .map { |todo| todo.to_displayable_string }
   end
 
   def self.to_displayable_list
@@ -43,15 +46,15 @@ class Todo < ActiveRecord::Base
     puts "My Todo-list\n\n"
 
     puts "Overdue\n"
-    puts self.overdue.map { |todo| todo.to_displayable_string }
+    puts self.overdue
     puts "\n"
 
     puts "Due Today\n"
-    puts self.due_today.map { |todo| todo.to_displayable_string }
+    puts self.due_today
     puts "\n\n"
 
     puts "Due Later\n"
-    puts self.due_later.map { |todo| todo.to_displayable_string }
+    puts self.due_later
     # puts "\n\n"
   end
 end
